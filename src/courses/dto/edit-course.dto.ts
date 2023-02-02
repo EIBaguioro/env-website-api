@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-export class CreateCourseDto {
+export class EditCourseDto {
 
     @IsNotEmpty()
     @IsString()
-    title: string;
+    title?: string;
 
     @IsNotEmpty()
     @IsString()
-    desc: string;
+    desc?: string;
 
     intro?: boolean;
 
@@ -17,5 +17,5 @@ export class CreateCourseDto {
     videoUrl?: string;
 
     @IsNotEmpty()
-    category: string;
+    category?: string;
 }
