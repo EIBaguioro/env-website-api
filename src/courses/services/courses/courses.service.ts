@@ -10,19 +10,9 @@ export class CoursesService {
 
     async createCourse(course: CreateCourseDto) {
 
-        try {
-            const createdCourse = await this.prisma.course.create({data: course});
-            return createdCourse;
-        } catch(error) {
-            
-            if(error instanceof Prisma.PrismaClientValidationError) {
-                throw new HttpException("Missing field or incorrect field type provided", HttpStatus.UNPROCESSABLE_ENTITY); 
-            }
-            
-            console.error(error);
-            throw new HttpException("An error has occured. Please consult your administrator.", HttpStatus.INTERNAL_SERVER_ERROR);
-
-        } 
+        const createdCourse = await this.prisma.course.create({data: course});
+        return createdCourse;
+        
     }
 
 }
