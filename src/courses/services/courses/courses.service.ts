@@ -15,4 +15,9 @@ export class CoursesService {
         
     }
 
+    async getAllCourses() {
+        const courses = await this.prisma.course.findMany();
+        return courses;
+    }
+
 }

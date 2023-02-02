@@ -1,4 +1,4 @@
-import { Body, Controller, Post, HttpException, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, HttpException, HttpStatus, ValidationPipe, Get } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
 import { CreateCourseDto } from 'src/courses/dto/create-course.dto';
 import { CoursesService } from 'src/courses/services/courses/courses.service';
@@ -16,6 +16,12 @@ export class CoursesController {
         const createdCourse = await this.courseService.createCourse(course);
         return createdCourse;
         
+    }
+
+    @Get()
+    async getAllCourses() {
+        const courses = await this.courseService.getAllCourses()
+        return courses;
     }
 
 }
