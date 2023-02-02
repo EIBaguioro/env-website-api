@@ -10,13 +10,10 @@ export class CreateCourseDto {
     @IsString()
     desc: string;
 
-    @IsBoolean()
     intro?: boolean;
 
-    @IsBoolean()
     visibility?: boolean;
 
-    @IsUrl()
     videoUrl?: string;
 
     @IsNotEmpty()
