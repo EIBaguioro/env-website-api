@@ -9,21 +9,27 @@ import {
   ParseIntPipe,
   Delete,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
-import { Param } from '@nestjs/common/decorators/http/route-params.decorator';
+import { Param, UploadedFile } from '@nestjs/common/decorators/http/route-params.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateCourseDto } from 'src/courses/dto/create-course.dto';
 import { EditCourseDto } from 'src/courses/dto/edit-course.dto';
 import { CoursesService } from 'src/courses/services/courses/courses.service';
+import { FileUploadService } from 'src/file-upload/services/file-upload/file-upload.service';
+import { storage } from 'src/utils/file-upload.config';
 
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly courseService: CoursesService) {}
+  constructor(private readonly courseService: CoursesService, private readonly fileUploadService: FileUploadService) {}
 
   @Post('create')
+  @UseInterceptors(FileInterceptor('video', { storage }))
   @UsePipes(ValidationPipe)
-  async createCourse(@Body() course: CreateCourseDto) {
-    const createdCourse = await this.courseService.createCourse(course);
+  async createCourse(@Body() course: CreateCourseDto, @UploadedFile() file: Express.Multer.File) {
+    const uploadedImage = await this.fileUploadService.upload(file);
+    const createdCourse = await this.courseService.createCourse({...course, videoUrl: uploadedImage.url});
     return createdCourse;
   }
 
