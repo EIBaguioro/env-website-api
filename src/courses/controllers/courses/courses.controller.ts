@@ -19,6 +19,8 @@ import { EditCourseDto } from 'src/courses/dto/edit-course.dto';
 import { CoursesService } from 'src/courses/services/courses/courses.service';
 import { FileUploadService } from 'src/file-upload/services/file-upload/file-upload.service';
 import { storage } from 'src/utils/file-upload.config';
+import { UploadApiResponse } from 'cloudinary';
+
 
 @Controller('courses')
 export class CoursesController {
@@ -40,11 +42,26 @@ export class CoursesController {
   }
 
   @Put(':id')
-  editCourse(
+  @UseInterceptors(FileInterceptor('video', { storage }))
+  @UsePipes(ValidationPipe)
+  async editCourse(
     @Param('id', ParseIntPipe) id: number,
     @Body() course: EditCourseDto,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    const editedCourse = this.courseService.editCourse(id, course);
+    
+    let uploadedImage: string;
+
+    if(file) {
+      const { url } = await this.fileUploadService.upload(file);
+      uploadedImage = url;
+    }
+    else {
+      uploadedImage = course.videoUrl;
+    }
+
+    const editedCourse = this.courseService.editCourse(id, {...course, videoUrl: uploadedImage });
+
     return editedCourse;
   }
 
