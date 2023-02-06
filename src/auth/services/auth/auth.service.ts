@@ -1,10 +1,11 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from 'src/users/services/users/users.service';
 import { comparePassword } from 'src/utils/bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
     async validateUser(email: string, submittedPassword: string) {
 
@@ -21,5 +22,14 @@ export class AuthService {
 
         return result;
         
+    }
+
+    login(user: any) {
+        const payload = { email: user.email, sub: user.userId };
+
+        return {
+            access_token: this.jwtService.sign(payload)
+        }
+
     }
 }
