@@ -12,7 +12,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
-import { Param, Query, UploadedFile } from '@nestjs/common/decorators/http/route-params.decorator';
+import {
+  Param,
+  Query,
+  UploadedFile,
+} from '@nestjs/common/decorators/http/route-params.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateCourseDto } from 'src/courses/dto/create-course.dto';
 import { EditCourseDto } from 'src/courses/dto/edit-course.dto';
@@ -21,32 +25,42 @@ import { FileUploadService } from 'src/file-upload/services/file-upload/file-upl
 import { storage } from 'src/utils/file-upload.config';
 import { UploadApiResponse } from 'cloudinary';
 
-
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly courseService: CoursesService, private readonly fileUploadService: FileUploadService) {}
+  constructor(
+    private readonly courseService: CoursesService,
+    private readonly fileUploadService: FileUploadService,
+  ) {}
 
   @Post('create')
-  @UseInterceptors(FileInterceptor('video', { storage }))
+  @UseInterceptors(
+    FileInterceptor('video', {
+      storage,
+    }),
+  )
   @UsePipes(ValidationPipe)
-  async createCourse(@Body() course: CreateCourseDto, @UploadedFile() file: Express.Multer.File) {
+  async createCourse(
+    @Body() course: CreateCourseDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     const uploadedImage = await this.fileUploadService.upload(file);
-    const createdCourse = await this.courseService.createCourse({...course, videoUrl: uploadedImage.url});
+    const createdCourse = await this.courseService.createCourse({
+      ...course,
+      videoUrl: uploadedImage.url,
+    });
     return createdCourse;
   }
 
-  
-  
   @Get()
   async getAllCourses() {
     const courses = await this.courseService.getAllCourses();
     return courses;
   }
-  
+
   @Get('filter')
   async getAllCoursesByCategory(@Query('category') category: string) {
     console.log(category);
-    
+
     const courses = await this.courseService.getAllCoursesByCategory(category);
     return courses;
   }
@@ -59,18 +73,19 @@ export class CoursesController {
     @Body() course: EditCourseDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    
     let uploadedImage: string;
 
-    if(file) {
+    if (file) {
       const { url } = await this.fileUploadService.upload(file);
       uploadedImage = url;
-    }
-    else {
+    } else {
       uploadedImage = course.videoUrl;
     }
 
-    const editedCourse = this.courseService.editCourse(id, {...course, videoUrl: uploadedImage });
+    const editedCourse = this.courseService.editCourse(id, {
+      ...course,
+      videoUrl: uploadedImage,
+    });
 
     return editedCourse;
   }

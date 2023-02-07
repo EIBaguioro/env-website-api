@@ -15,7 +15,7 @@ export class FileUploadService {
     }
 
     async upload(file: any) {
-        return await this.cloudinary.uploader.upload(file.path);
+        return await this.cloudinary.uploader.upload(file.path, {resource_type: 'video'});
     }
 
 }
