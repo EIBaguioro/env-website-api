@@ -21,6 +21,11 @@ export class CoursesService {
         return courses;
     }
 
+    async getAllCoursesByCategory(category: string) {
+        const courses = await this.prisma.course.findMany({ where: { category: "beginner" } });
+        return courses;
+    }
+
     editCourse(id: number, course: EditCourseDto) {
         const editedCourse = this.prisma.course.update({ where: { id }, data: { ...course} });
         return editedCourse;

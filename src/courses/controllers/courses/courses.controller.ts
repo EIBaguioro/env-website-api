@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
-import { Param, UploadedFile } from '@nestjs/common/decorators/http/route-params.decorator';
+import { Param, Query, UploadedFile } from '@nestjs/common/decorators/http/route-params.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateCourseDto } from 'src/courses/dto/create-course.dto';
 import { EditCourseDto } from 'src/courses/dto/edit-course.dto';
@@ -35,9 +35,19 @@ export class CoursesController {
     return createdCourse;
   }
 
+  
+  
   @Get()
   async getAllCourses() {
     const courses = await this.courseService.getAllCourses();
+    return courses;
+  }
+  
+  @Get('filter')
+  async getAllCoursesByCategory(@Query('category') category: string) {
+    console.log(category);
+    
+    const courses = await this.courseService.getAllCoursesByCategory(category);
     return courses;
   }
 
