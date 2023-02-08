@@ -22,7 +22,7 @@ export class CoursesService {
     }
 
     async getAllCoursesByCategory(category: string) {
-        const courses = await this.prisma.course.findMany({ where: { category: "beginner" } });
+        const courses = await this.prisma.course.findMany({ where: { category: { contains: category } } });
         return courses;
     }
 
