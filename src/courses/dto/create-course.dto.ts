@@ -10,7 +10,7 @@ export class CreateCourseDto {
     @IsString()
     desc: string;
 
-    intro?: boolean;
+    intro?: string;
 
     visibility?: boolean;
 

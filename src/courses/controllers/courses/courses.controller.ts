@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   Delete,
   Put,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
 import {

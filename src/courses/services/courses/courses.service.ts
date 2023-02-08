@@ -11,7 +11,9 @@ export class CoursesService {
 
     async createCourse(course: CreateCourseDto) {
 
-        const createdCourse = await this.prisma.course.create({data: course});
+        const { intro } = course;
+
+        const createdCourse = await this.prisma.course.create({data: {...course, intro: Boolean(intro)}});
         return createdCourse;
         
     }
