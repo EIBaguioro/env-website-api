@@ -28,13 +28,17 @@ export class CoursesService {
         return courses;
     }
 
-    editCourse(id: number, course: EditCourseDto) {
-        const editedCourse = this.prisma.course.update({ where: { id }, data: { ...course} });
+    async editCourse(id: number, course: EditCourseDto) {
+        const editedCourse = await this.prisma.course.update({ where: { id }, data: { ...course} });
         return editedCourse;
     }
 
-    deleteCourse(id: number) {
-        this.prisma.course.delete({ where: { id } });
+    async deleteCourse(ids: number[]) {
+        
+        const deletedCourses = await this.prisma.course.deleteMany( { where: { id: { in: ids } } } )
+
+        return deletedCourses;
+
     }
     
 

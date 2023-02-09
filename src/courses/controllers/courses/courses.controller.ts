@@ -90,9 +90,12 @@ export class CoursesController {
     return editedCourse;
   }
 
-  @Delete(':id')
-  deleteCourse(@Param('id', ParseIntPipe) id: number) {
-    const deletedCourse = this.courseService.deleteCourse(id);
-    return `course ${id} has been deleted`;
+  @Delete('delete')
+  async deleteCourse(@Body() courses: string[]) {
+
+  const courseIds = courses.map((id) => parseInt(id));
+  
+  const deletedCourses = await this.courseService.deleteCourse(courseIds);
+  return deletedCourses;
   }
 }
