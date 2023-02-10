@@ -51,25 +51,27 @@ export class CoursesController {
     return createdCourse;
   }
 
+  
+  @Get('filter')
+  async getAllCoursesByCategory(@Query('category') category: string) {
+    
+    const courses = await this.courseService.getAllCoursesByCategory(category);
+    return courses;
+    
+  }
+  
+  @Get('')
+  async getAllCourses() {
+    const courses = await this.courseService.getAllCourses();
+    return courses;
+  }
+
   @Get(':id') 
   async getCourse(@Param('id', ParseIntPipe) id: number) {
     const course = await this.courseService.getCourse(id);
     return course;
   }
 
-  @Get()
-  async getAllCourses() {
-    const courses = await this.courseService.getAllCourses();
-    return courses;
-  }
-
-  @Get('filter')
-  async getAllCoursesByCategory(@Query('category') category: string) {
-    console.log(category);
-
-    // const courses = await this.courseService.getAllCoursesByCategory(category);
-    // return courses;
-  }
 
   @Put(':id')
   @UseInterceptors(FileInterceptor('video', { storage }))
