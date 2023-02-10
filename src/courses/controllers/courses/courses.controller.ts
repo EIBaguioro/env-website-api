@@ -67,8 +67,8 @@ export class CoursesController {
   async getAllCoursesByCategory(@Query('category') category: string) {
     console.log(category);
 
-    const courses = await this.courseService.getAllCoursesByCategory(category);
-    return courses;
+    // const courses = await this.courseService.getAllCoursesByCategory(category);
+    // return courses;
   }
 
   @Put(':id')

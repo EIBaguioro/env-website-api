@@ -7,7 +7,7 @@ export class EditCourseDto {
 
     desc?: string;
 
-    intro?: boolean;
+    intro?: string;
 
     visibility?: boolean;
 

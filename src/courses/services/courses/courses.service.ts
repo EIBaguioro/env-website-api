@@ -34,7 +34,10 @@ export class CoursesService {
     }
 
     async editCourse(id: number, course: EditCourseDto) {
-        const editedCourse = await this.prisma.course.update({ where: { id }, data: { ...course} });
+
+        const { intro } = course;
+
+        const editedCourse = await this.prisma.course.update({ where: { id }, data: { ...course, intro: Boolean(intro)} });
         return editedCourse;
     }
 
