@@ -51,6 +51,12 @@ export class CoursesController {
     return createdCourse;
   }
 
+  @Get(':id') 
+  async getCourse(@Param('id', ParseIntPipe) id: number) {
+    const course = await this.courseService.getCourse(id);
+    return course;
+  }
+
   @Get()
   async getAllCourses() {
     const courses = await this.courseService.getAllCourses();
