@@ -9,7 +9,8 @@ import {
   ParseIntPipe,
   Delete,
   Put,
-  UseInterceptors
+  UseInterceptors,
+  UseGuards 
 } from '@nestjs/common';
 import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
 import {
@@ -24,6 +25,8 @@ import { CoursesService } from 'src/courses/services/courses/courses.service';
 import { FileUploadService } from 'src/file-upload/services/file-upload/file-upload.service';
 import { storage } from 'src/utils/file-upload.config';
 import { UploadApiResponse } from 'cloudinary';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('courses')
 export class CoursesController {
@@ -60,7 +63,9 @@ export class CoursesController {
     
   }
   
+  // @Roles(Role.Admin)
   @Get('')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllCourses() {
     const courses = await this.courseService.getAllCourses();
     return courses;

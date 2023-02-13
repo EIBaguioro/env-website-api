@@ -20,5 +20,11 @@ export class UsersService {
         return matchedUser;
     }
 
+    async findUserById(id: number) {
+        const matchedUser = await this.prisma.user.findUnique({ where: { id } });
+        console.log(matchedUser);
+        return matchedUser;
+    }
+
 
 }
