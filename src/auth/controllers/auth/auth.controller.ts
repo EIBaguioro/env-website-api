@@ -1,4 +1,4 @@
-import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Response, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { AuthService } from 'src/auth/services/auth/auth.service';
@@ -10,11 +10,14 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Request() req) {
+    async login(@Request() req, @Response() res) {
 
-        console.log(req.user)
-        
-        return this.authService.login(req.user);
+        const { user, access_token } = this.authService.login(req.user);
+
+        res.setHeader('Authorization', `Bearer ${access_token}`);
+
+        res.status(HttpStatus.OK).json(user);
+
     }
 
 }
