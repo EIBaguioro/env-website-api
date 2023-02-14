@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  HttpException,
-  HttpStatus,
   ValidationPipe,
   Get,
   ParseIntPipe,
@@ -24,11 +22,11 @@ import { EditCourseDto } from 'src/courses/dto/edit-course.dto';
 import { CoursesService } from 'src/courses/services/courses/courses.service';
 import { FileUploadService } from 'src/file-upload/services/file-upload/file-upload.service';
 import { storage } from 'src/utils/file-upload.config';
-import { UploadApiResponse } from 'cloudinary';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('courses')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class CoursesController {
   constructor(
     private readonly courseService: CoursesService,
@@ -63,9 +61,7 @@ export class CoursesController {
     
   }
   
-  // @Roles(Role.Admin)
   @Get('')
-  @UseGuards(JwtAuthGuard, RolesGuard)
   async getAllCourses() {
     const courses = await this.courseService.getAllCourses();
     return courses;
