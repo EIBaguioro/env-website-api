@@ -26,7 +26,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('courses')
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class CoursesController {
   constructor(
     private readonly courseService: CoursesService,
@@ -34,6 +33,7 @@ export class CoursesController {
   ) {}
 
   @Post('create')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(
     FileInterceptor('video', {
       storage,
@@ -75,6 +75,7 @@ export class CoursesController {
 
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @UseInterceptors(FileInterceptor('video', { storage }))
   @UsePipes(ValidationPipe)
   async editCourse(
@@ -100,6 +101,7 @@ export class CoursesController {
   }
 
   @Delete('delete')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async deleteCourse(@Body() courses: string[]) {
 
   const courseIds = courses.map((id) => parseInt(id));

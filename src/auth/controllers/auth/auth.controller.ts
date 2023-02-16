@@ -12,11 +12,9 @@ export class AuthController {
     @Post('login')
     async login(@Request() req, @Response() res) {
 
-        const { user, access_token } = this.authService.login(req.user);
+        const userInfo = this.authService.login(req.user);
 
-        res.setHeader('Authorization', `Bearer ${access_token}`);
-
-        res.status(HttpStatus.OK).json(user);
+        res.status(HttpStatus.OK).json(userInfo);
 
     }
 
